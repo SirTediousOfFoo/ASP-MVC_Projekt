@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Zadatak_02_01.cs" />
-    <Compile Remove="Zadatak_02_02.cs" />
     <Compile Remove="Zadatak_03_01.cs" />
     <Compile Remove="Zadatak_03_02.cs" />
     <Compile Remove="Zadatak_03_03.cs" />
@@ -30,8 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Zadatak_02_01.cs" />
-    <None Include="Zadatak_02_02.cs" />
     <None Include="Zadatak_03_01.cs" />
     <None Include="Zadatak_03_02.cs" />
     <None Include="Zadatak_03_03.cs" />
