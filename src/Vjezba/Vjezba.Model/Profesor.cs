@@ -10,6 +10,8 @@ namespace Vjezba.Model
         public Zvanje Zvanje { get; set; }
         public DateTime DatumIzbora { get; set; }
 
+        public List<Predmet> Predmeti { get; set; } = new List<Predmet>();
+
         public int KolikoDoReizbora()
         {
             var next = DatumIzbora.AddYears(Zvanje == Zvanje.Asistent ? 4 : 5);
