@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Vjezba.Web.Mock;
 
 namespace Vjezba.Web
 {
@@ -58,6 +60,9 @@ namespace Vjezba.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            MockClientRepository.Instance.Initialize(Path.Combine(env.WebRootPath, "data"));
+            MockCityRepository.Instance.Initialize(Path.Combine(env.WebRootPath, "data"));
         }
     }
 }
