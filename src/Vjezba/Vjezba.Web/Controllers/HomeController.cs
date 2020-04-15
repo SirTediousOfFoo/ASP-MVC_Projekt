@@ -52,7 +52,21 @@ namespace Vjezba.Web.Controllers
         public IActionResult SubmitQuery(IFormCollection formData)
         {
             //Ovdje je potrebno obraditi podatke i pospremiti finalni string u ViewBag
+            var ime = formData["ime"];
+            var prezime = formData["prezime"];
+            var email = formData["email"];
+            var poruka = formData["poruka"];
+            var tip = formData["tip"];
+            var newsletter = bool.Parse(formData["newsletter"].FirstOrDefault());
 
+            var msg = "Poštovani {0} {1} ({2}) zaprimili smo vašu poruku te će vam se netko ubrzo javiti. Sadržaj vaše poruke je: [{3}] {4}." +
+                " Također, {5} o daljnjim promjenama preko newslettera.";
+
+            ViewBag.Message = string.Format(msg,
+                ime, prezime,
+                email,
+                tip, poruka,
+                newsletter ? "obavijestit cemo vas" : "necemo vas obavijestiti");
 
             //Kao rezultat se pogled /Views/Home/ContactSuccess.cshtml renderira u "pravi" HTML
             //Kao parametar se predaje naziv cshtml datoteke koju treba obraditi (ne koristi se default vrijednost)
