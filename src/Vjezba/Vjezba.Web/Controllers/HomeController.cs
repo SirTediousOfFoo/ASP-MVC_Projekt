@@ -16,6 +16,13 @@ namespace Vjezba.Web.Controllers
             return View();
         }
 
+        public IActionResult FAQ(int? selected = null)
+        {
+            ViewData["selected"] = selected;
+
+            return View();
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
