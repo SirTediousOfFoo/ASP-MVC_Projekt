@@ -1,0 +1,47 @@
+﻿@model List<Comic>
+
+
+@if (Model == null)
+{
+<h3>No comics here buddy</h3>
+}
+else
+{
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Comic</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Time posted</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr id="cmc-@item.ID">
+            <td>
+                <a href="@item.ID"> <img src="/@item.ContentPath" class="img-thumbnail" style="max-width: 200px" /></a>
+            </td>
+            <td>@item.Title</td>
+            <td>@item.Category.Tag</td>
+            <td>@item.PublishDate</td>
+            @if(@ViewData["Hidden"] != "true")
+                {
+                <td>
+                    <label onclick="remove(@item.ID)" class="btn-danger">[remove]</label>
+                </td>
+                <td>
+                    <label onclick="edit(@item.ID)" class="btn-success">[edit]</label>
+                </td>
+                }
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+
+}

@@ -1,0 +1,62 @@
+﻿@using Vjezba.Model
+@model Comic
+
+<div class="container">
+    <div>
+        <div class="row">
+            <center>
+                <h4>@Model.Title</h4>
+            </center>
+        </div>
+        <div class="row">
+            <center class="col-md-12">
+                <img src="@Model.ContentPath" class="img-responsive" style="max-width: 450px"/>
+            </center>
+        </div>
+        <div class="row">
+            <center>
+                <h5>@Model.Description</h5>
+                <p style="opacity: 0.5;">#@Model.Category.Tag</p>
+            </center>
+        </div>
+        <h3>Comments</h3>
+        <div id="commentBox" class="panel panel-group">
+            @if (Model.Comments != null)
+            {
+                @foreach (Comment comm in Model.Comments)
+                {
+                    <partial name="_miniComment" model="comm" />
+                }
+            }
+            @*else
+            {
+                <div class="panel-body">
+                    No comments here buddy...
+                </div>
+            }*@
+        </div>
+    </div>
+</div>
+<input class="hidden" id="modelID" value="@Model.ID" />
+
+@if (User.Identity.IsAuthenticated)
+{
+<form>
+    <div class="row">
+        <div class="form-group col-md-3">
+            <label>Add your comment</label>
+            <input class="input-lg" type="text" id="comment" required/>
+        </div>
+
+        
+
+    </div>
+    <div class="form-group">
+        <div onclick="comment()" id="commentBtn" class="btn btn-default" >Post</div>
+    </div>
+</form>
+}
+else
+{
+    <p>Log in to post comments</p>
+}

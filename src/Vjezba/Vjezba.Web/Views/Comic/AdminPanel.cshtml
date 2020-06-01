@@ -1,0 +1,149 @@
+﻿@model Vjezba.Web.Models.ComicUploadModel
+@{
+    ViewBag.Title = "Make changes to your comics";
+}
+
+<h2>@Html.ViewBag.Title</h2>
+
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#contact-modal">
+    Add new comic
+</button>
+
+<form asp-action="AdminPanel" enctype="multipart/form-data">
+    <div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Upload comic</h4>
+                </div>
+                <div class="modal-body">
+                   <partial name="_CreateOrEdit" />
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label>Comic image</label>
+                            <input asp-for="File" class="form-control" type="file" accept='image/*' required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form asp-action="EditComic">
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="editModalContent">
+                        <partial name="_CreateOrEdit" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="comicList">
+    <partial name="_ComicList" />
+</div>
+
+<ul class="pager">
+    <li class="previous">
+        <button id="prv" class="btn btn-success navbar-btn" onclick="previous()">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+        </button>
+    </li>
+
+    <li class="next">
+        <button id="nxt" class="btn btn-success navbar-btn" onclick="next()">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </button>
+    </li>
+</ul>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        var position = 0;
+
+        $(window).on('load', function () {
+            $.ajax({
+                url: "Comic/ComicList",
+                type: 'GET',
+                data: {
+                    position: position,
+                    where: "admin"
+                },
+                success: function (result) {
+                    $("#comicList").html(result);
+                }
+            });
+
+        });
+
+        function edit(id) {
+            $.ajax({
+                url: "Comic/GetEditModal",
+                type: 'GET',
+                data: {
+                    id: id
+                },
+                success: function (result) {
+                    $("#editModalContent").html(result);
+                }
+            });
+            $('#editModal').modal('show');
+        }
+
+        function next() {
+            $.ajax({
+                url: "Comic/ComicList",
+                type: 'GET',
+                data: {
+                    position: position + 1,
+                    where: "admin"
+                },
+                success: function (result) {
+                    position += 1;
+                    $("#comicList").html(result);
+                }
+            });
+        }
+
+        function previous() {
+            $.ajax({
+                url: "Comic/ComicList",
+                type: 'GET',
+                data: {
+                    position: position - 1,
+                    where: "admin"
+                },
+                success: function (result) {
+                    position -= 1;
+                    $("#comicList").html(result);
+                }
+            });
+        }
+
+        function remove(id) {
+            $.ajax({
+                url: "Comic/RemoveComic",
+                type: 'DELETE',
+                data: {
+                    id: id
+                },
+                success: function () {
+                    $("#cmc-" + id).remove();
+                }
+            });
+        }
+    </script>
+}

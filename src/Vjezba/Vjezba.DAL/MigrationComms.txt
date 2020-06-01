@@ -1,0 +1,2 @@
+﻿dotnet ef database update --project Vjezba.DAL --startup-project Vjezba.Web
+dotnet ef migrations add Init --project Vjezba.DAL --startup-project Vjezba.Web

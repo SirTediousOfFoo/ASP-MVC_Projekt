@@ -1,0 +1,27 @@
+﻿@model Comic
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label>Title</label>
+            <input asp-for="Title" class="form-control" placeholder="Comic title">
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label>Description</label>
+            <input asp-for="Description" class="form-control" placeholder="Short comic description">
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label>Category</label>
+            <select asp-for="CategoryID" asp-items="ViewBag.Categories" class="form-control"></select>
+        </div>
+    </div>
+
+    @if(ViewBag.Edit == "true")
+    {
+        <input asp-for="ID" class="hidden">
+    }

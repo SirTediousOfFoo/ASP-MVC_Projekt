@@ -1,0 +1,120 @@
+﻿@model Vjezba.Model.Comic
+@{ 
+    ViewData["Title"] = "Awful Comics"; 
+    }
+
+
+<ul class="pager">
+    <li class="previous" >
+        <button id="prv" class="btn btn-success navbar-btn">
+            <i class="fa fa-angle-left" aria-hidden="true"></i> Previous
+        </button>
+        <button id="fst" class="btn btn-success navbar-btn">
+            <i class="fa fa-angle-double-left" aria-hidden="true"></i> First
+        </button>
+    </li>
+
+    <li class="next">
+        <button id="lst" class="btn btn-success navbar-btn">
+            Latest <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+        </button>
+        <button id="nxt" class="btn btn-success navbar-btn">
+            Next <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </button>
+    </li>
+</ul>
+
+<div id="comicBox">
+    <partial name="_Comic" />
+</div>
+
+
+@section Scripts {
+    <script>
+        function deleteComment(id) {
+            var broj = id;
+            $.ajax({
+                type: "DELETE",
+                url: "Comic/DeleteComment",
+                data:
+                {
+                    id: id
+                },
+                success: function () {
+                    $("#comment-" + id).remove();
+                }
+            });
+        }
+        function comment() {
+            $.ajax({
+                type: "POST",
+                url: "Comic/AddComment",
+                data:
+                {
+                    comment: $("#comment").val(),
+                    modelID: $("#modelID").val()
+                },
+                success: function (response) {
+                    $("#commentBox").append(response);
+                }
+            });
+        }
+        $("#nxt").click(function () {
+            var id = $("#modelID").val();
+            $.ajax({
+                url: "Comic/Navigate",
+                type: 'GET',
+                data: {
+                    where: "next",
+                    id: id
+                },
+                success: function (result) {
+                    $("#comicBox").html(result);
+                    window.history.pushState("", "", "/" + $("#modelID").val() );
+                }
+            });
+        });
+        $("#prv").click(function () {
+            $.ajax({
+                url: "Comic/Navigate",
+                type: 'GET',
+                data: {
+                    where: "prev",
+                    id: $("#modelID").val()
+                },
+                success: function (result) {
+                    $("#comicBox").html(result);
+                    window.history.pushState("", "", "/" + $("#modelID").val() );
+                }
+            });
+        });
+        $("#fst").click(function () {
+            $.ajax({
+                url: "Comic/Navigate",
+                type: 'GET',
+                data: {
+                    where: "first",
+                    id: $("#modelID").val()
+                },
+                success: function (result) {
+                    $("#comicBox").html(result);
+                    window.history.pushState("", "", "/" + $("#modelID").val() );
+                }
+            });
+        });
+        $("#lst").click(function () {
+            $.ajax({
+                url: "Comic/Navigate",
+                type: 'GET',
+                data: {
+                    where: "last",
+                    id: $("#modelID").val()                    
+                },
+                success: function (result) {
+                    $("#comicBox").html(result);
+                    window.history.pushState("", "", "/" + $("#modelID").val());
+                }
+            });
+        });
+    </script>
+}

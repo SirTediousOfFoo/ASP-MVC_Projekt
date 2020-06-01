@@ -1,0 +1,110 @@
+﻿
+@{ ViewData["Title"] = "Awful Archives";
+    ViewData["Hidden"] = "true";
+}
+@model List<Comic>
+
+<h3>@ViewData["Title"]</h3>
+
+<form class="form-inline" id="searchForm">
+    <div class="form-group">
+        <input id="title" class="form-control" type="text" placeholder="Search by title" />
+    </div>
+    <div class="form-group">
+        <input id="description" class="form-control" type="text" placeholder="Search by description" />
+    </div>
+    
+    <button type="button" onclick="find()" class="btn btn-default">Submit</button>
+</form>
+
+<div id="comicList">
+
+    <partial name="_ComicList" model="@Model" view-data="@ViewData" />
+
+</div>
+
+<ul class="pager">
+    <li class="previous">
+        <button id="prv" class="btn btn-success navbar-btn" onclick="previous()">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+        </button>
+    </li>
+
+    <li class="next">
+        <button id="nxt" class="btn btn-success navbar-btn " onclick="next()">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </button>
+    </li>
+</ul>
+
+@section Scripts {
+    <script>
+        var position = 0;
+
+        function find() {
+
+            var title = $("#title").val();
+            var desc = $("#description").val();
+            $.ajax({
+                url: "Comic/Find",
+                type: "POST",
+                data: {
+                    "title": title,
+                    "description": desc
+                },
+                success: function (result) {
+                    $("#comicList").html(result);
+                    window.history.pushState("", "", "/0");
+                }
+            });
+        }
+
+        $(window).on('load', function () {
+            if (position == 0) {
+                $("#prv").prop("disabled", true);
+            }
+        });
+         
+        function next() {
+            $.ajax({
+                url: "Comic/ComicList",
+                type: 'GET',
+                data: {
+                    position: position + 1,
+                    where: "archive"
+                },
+                success: function (result) {
+                    position += 1;
+
+                    $("#comicList").html(result);
+                    window.history.pushState("", "", "/" + position);
+
+                    if (position > 0) {
+                        $("#prv").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        function previous() {
+            $.ajax({
+                url: "Comic/ComicList",
+                type: 'GET',
+                data: {
+                    position: position - 1,
+                    where: "archive"
+                },
+                success: function (result) {
+                    position -= 1;
+
+                    $("#comicList").html(result);
+                    window.history.pushState("", "", "/" + position);
+                    if (position == 0) {
+                        $("#prv").prop("disabled", true);
+                    }
+
+                }
+            });
+        }
+    </script>
+}

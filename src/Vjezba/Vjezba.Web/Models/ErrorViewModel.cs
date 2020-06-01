@@ -1,5 +1,3 @@
-using System;
-
 namespace Vjezba.Web.Models
 {
     public class ErrorViewModel
